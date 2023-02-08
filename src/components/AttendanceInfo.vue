@@ -24,10 +24,8 @@ import { useRouter } from 'vue-router';
 import { useToZero } from '@/hooks/useToZero';
 import { useSignStore } from '@/store/sign';
 import _ from 'lodash'
-interface propsType {
-  selectedMonth: Number
-}
-const props = defineProps<propsType>()
+
+const props = defineProps(['selectedMonth'])
 const useSign = useSignStore()
 const router = useRouter()
 enum detailEnums {
@@ -58,7 +56,10 @@ const detailInfos = reactive<dataType>({
   lateAndEarly: 0,
 })
 const viewDetail = () => {
-  router.push('/exception')
+  router.push({
+    path: '/exception',
+    query: { month: props.selectedMonth }
+  });
 }
 
 watchEffect((resetting) => {

@@ -1,20 +1,20 @@
 <template>
-  <div class="common-layout">
+  <ElContainer>
+    <ElHeader class=" bg-sky-200 h-1/3">
+      <Header />
+    </ElHeader>
     <ElContainer>
-      <ElHeader class=" bg-sky-200 h-1/3">
-        <Header />
-      </ElHeader>
-      <ElContainer>
-        <ElAside>
-          <Aside />
-        </ElAside>
-        <ElMain class=" bg-gray-300 m-10 flex-grow ">
+      <ElAside>
+        <Aside />
+      </ElAside>
+      <ElMain class=" h-full bg-gray-300 m-10 flex-grow ">
+        <ElCard>
           <Bread />
           <Main />
-        </ElMain>
-      </ElContainer>
+        </ElCard>
+      </ElMain>
     </ElContainer>
-  </div>
+  </ElContainer>
 </template>
 
 <script setup lang='ts'>
