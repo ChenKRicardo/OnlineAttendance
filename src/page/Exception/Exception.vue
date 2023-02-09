@@ -13,8 +13,6 @@
     </el-button-group>
   </div>
   <TimeLine class="mt-4" :actualSatus="actualSatus" :selectedMonth="selectedMonth" :currentYear="currentYear" />
-
-
 </template>
 
 <script setup lang='ts'>

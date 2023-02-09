@@ -5,7 +5,7 @@ const Login = () => import('@/page/Login.vue');
 const Home = () => import('@/page/Home.vue');
 const Sign = () => import('@/page/Sign.vue');
 const Exception = () => import('@/page/Exception/Exception.vue');
-const Apply = () => import('@/page/Apply.vue');
+const Apply = () => import('@/page/Apply/Apply.vue');
 const Check = () => import('@/page/Check.vue');
 const routes: RouteRecordRaw[] = [
   {

@@ -31,16 +31,19 @@
 import { ref, reactive, computed } from 'vue'
 import { useUserStore } from '@/store/user';
 import { useSignStore } from '@/store/sign';
+import { useChecksStore } from '@/store/checks';
 defineProps({
   fontSize: Number
 })
 const signStore = useSignStore()
 const userStore = useUserStore()
+const applyStroe = useChecksStore()
 const head = computed(() => userStore.userInfo.infos?.head)
 const name = computed(() => userStore.userInfo.infos?.name)
 const handleLogout = () => {
   userStore.clearToken
   signStore.clearAttendanceInfo
+  applyStroe.clearAllInfo
   window.location.replace('/login')
 }
 </script>
