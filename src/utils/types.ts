@@ -18,3 +18,8 @@ export interface newApplyInfo {
   _id: string,
   state: string
 }
+export interface news {
+  userid: string,
+  applicant?: boolean,
+  approver?: boolean
+}

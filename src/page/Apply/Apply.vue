@@ -63,6 +63,7 @@ import { ApplyInfo, newApplyInfo } from '@/utils/types';
 import { useChecksStore } from '@/store/checks';
 import { useUserStore } from '@/store/user';
 import dayjs from 'dayjs';
+import { useNewsStore } from '@/store/news';
 enum reasonList {
   '年假' = '年假',
   '事假' = '事假',
@@ -72,6 +73,7 @@ enum reasonList {
 }
 const useApply = useChecksStore()
 const useUser = useUserStore()
+const newsStore = useNewsStore()
 const statusType = ref('待审批')
 const pageSize = ref(2)
 const pageCurrent = ref(1)
@@ -79,6 +81,8 @@ const searchKey = ref()
 const dialogVisible = ref(false)
 const pageApplyList = computed(() => useApply.applyList.slice((pageCurrent.value - 1) * pageSize.value, pageCurrent.value * pageSize.value))
 const approver = computed(() => useUser.userInfo.infos?.approver)
+const userPermission = computed(() => (useUser.userInfo.infos?.permission as string[]).includes('check'))
+
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive<ApplyInfo>({
   applicantid: '',
@@ -89,8 +93,6 @@ const ruleForm = reactive<ApplyInfo>({
   reason: '',
   time: ['', '']
 })
-console.log(approver);
-
 const validatorTime = (rule: unknown, value: [DateModelType, DateModelType], callback: (arg?: Error) => void) => {
   if (!value[0] && !value[1]) {
     callback(new Error('请选择审批时间'))
@@ -115,7 +117,7 @@ const rules = reactive<FormRules>({
 })
 const searchInfo = () => {
   const applicantname = useApply.applyList.find(v => v.applicantname.includes(searchKey.value))?.applicantname
-  initApplyData(useUser.userInfo.infos?._id, applicantname)
+  initApplyData(useUser.userInfo.infos?._id, applicantname, statusType.value, userPermission.value)
 }
 const handleChange = (nowPage: number) => {
   pageCurrent.value = nowPage
@@ -124,7 +126,7 @@ const handleClose = () => {
   dialogVisible.value = false
 }
 const changeState = () => {
-  initApplyData(useUser.userInfo.infos?._id, useUser.userInfo.infos?.name, statusType.value)
+  initApplyData(useUser.userInfo.infos?._id, useUser.userInfo.infos?.name, statusType.value, userPermission.value)
 }
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -137,6 +139,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       const res = await postApply(ruleForm)
       if (res.data.errcode === 0) {
+        newsStore.putNews({ userid: ruleForm.applicantid, approver: true })
         ElMessage.success('添加审批成功')
         initApplyData()
       }
@@ -149,10 +152,8 @@ const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
 }
-const initApplyData = async (applicantid = useUser.userInfo.infos?._id, applicantname: string = useUser.userInfo.infos?.name, state = '待审批') => {
-  console.log(applicantname);
-
-  const res = await getApply(applicantid, applicantname, state)
+const initApplyData = async (applicantid = useUser.userInfo.infos?._id, applicantname: string = useUser.userInfo.infos?.name, state = '待审批', permission: boolean = userPermission.value) => {
+  const res = await getApply(applicantid, applicantname, state, permission)
   if (res.data.errcode === 0) {
     useApply.applyList = res.data.rets
   }

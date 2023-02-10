@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { getApply, postApply, putApply } from '@/service';
-import { ApplyInfo, newApplyInfo } from '@/utils/types';
+import { getApply } from '@/service';
+
 interface Infos {
   [index: string]: any
 }
@@ -20,8 +20,5 @@ export const useChecksStore = defineStore('checks', {
       state.applyList = []
       state.checkList = []
     }
-  },
-  actions: {
-
   }
 })
