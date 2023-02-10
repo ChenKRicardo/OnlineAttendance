@@ -1,0 +1,24 @@
+{
+  "name": "app-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run db\" \"npm run dev\"",
+    "dev": "node ./bin/www",
+    "db": "mongod --dbpath=./db"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.1",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
